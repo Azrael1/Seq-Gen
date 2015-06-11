@@ -1,4 +1,4 @@
-azrael@azrael-G551JK:~/Documents/nn/code/prelim1$ THEANO_FLAGS='exception_verbosity=high' python combine.py
+zrael@azrael-G551JK:~/Documents/nn/code/prelim1$ THEANO_FLAGS='exception_verbosity=high' python combine.py
 Using gpu device 0: GeForce GTX 850M
 /home/azrael/anaconda/lib/python2.7/site-packages/theano/tensor/subtensor.py:110: FutureWarning: comparison to `None` will result in an elementwise object comparison in the future.
   start in [None, 0] or
@@ -10,24 +10,27 @@ Using gpu device 0: GeForce GTX 850M
   from scan_perform.scan_perform import *
 /home/azrael/anaconda/lib/python2.7/site-packages/theano/tensor/subtensor.py:190: FutureWarning: comparison to `None` will result in an elementwise object comparison in the future.
   if stop in [None, maxsize]:
-Compiling time is  63.4677400589
+Compiling time is  998.259691
 ... Training the model. Booyah bitch!!
+WARNING: ('Stride mismatch', ((200, 1), (200, 1), (4, 800), (4, 4), 'DimShuffle{1,0}'))
+WARNING: ('Stride mismatch', ((200, 1), (200, 1), (4, 800), (4, 4), 'DimShuffle{1,0}'))
 Traceback (most recent call last):
-  File "combine.py", line 251, in <module>
-    SGD(0.001, 1000)
-  File "combine.py", line 236, in SGD
+  File "combine.py", line 250, in <module>
+    SGD(0.001, 1)
+  File "combine.py", line 235, in SGD
     train_loss = train_net(seqidx)
-  File "/home/azrael/anaconda/lib/python2.7/site-packages/theano/compile/function_module.py", line 588, in __call__
-    self.fn.thunks[self.fn.position_of_error])
   File "/home/azrael/anaconda/lib/python2.7/site-packages/theano/compile/function_module.py", line 579, in __call__
     outputs = self.fn()
+  File "/home/azrael/anaconda/lib/python2.7/site-packages/theano/compile/debugmode.py", line 2030, in deco
+    return f()
+  File "/home/azrael/anaconda/lib/python2.7/site-packages/theano/compile/debugmode.py", line 1790, in f
+    thunk_py()
   File "/home/azrael/anaconda/lib/python2.7/site-packages/theano/scan_module/scan_op.py", line 656, in rval
     r = p(n, [x[0] for x in i], o)
   File "/home/azrael/anaconda/lib/python2.7/site-packages/theano/scan_module/scan_op.py", line 650, in <lambda>
     self, node)
   File "scan_perform.pyx", line 341, in theano.scan_module.scan_perform.perform (/home/azrael/.theano/compiledir_Linux-3.16.0-37-generic-x86_64-with-debian-jessie-sid-x86_64-2.7.10-64/scan_perform/mod.cpp:3573)
   File "scan_perform.pyx", line 335, in theano.scan_module.scan_perform.perform (/home/azrael/.theano/compiledir_Linux-3.16.0-37-generic-x86_64-with-debian-jessie-sid-x86_64-2.7.10-64/scan_perform/mod.cpp:3505)
-
 ValueError: CudaNdarray_CopyFromCudaNdarray: need same dimensions for dim 0, destination=79, source=1
 Apply node that caused the error: GpuIncSubtensor{InplaceSet;::, 0:1:}(GpuIncSubtensor{Set;::, 1:200:}.0, CudaNdarrayConstant{0.0})
 Use another linker then the c linker to have the inputs shapes and strides printed.
@@ -35,258 +38,10 @@ Debugprint of the apply node:
 GpuIncSubtensor{InplaceSet;::, 0:1:} [@A] <CudaNdarrayType(float32, matrix)> ''   
  |GpuIncSubtensor{Set;::, 1:200:} [@B] <CudaNdarrayType(float32, matrix)> ''   
  | |GpuElemwise{mul,no_inplace} [@C] <CudaNdarrayType(float32, matrix)> ''   
- | | |c0[t-1][cuda] [@D] <CudaNdarrayType(float32, matrix)>
- | | |<CudaNdarrayType(float32, row)> [@E] <CudaNdarrayType(float32, row)>
- | |GpuSubtensor{::, 0:199:} [@F] <CudaNdarrayType(float32, matrix)> ''   
+ | | |GpuFromHost [@D] <CudaNdarrayType(float32, matrix)> ''   
+ | | | |c0[t-1] [@E] <TensorType(float32, matrix)>
+ | | |GpuFromHost [@F] <CudaNdarrayType(float32, row)> ''   
+ | |   |<TensorType(float32, row)> [@G] <TensorType(float32, row)>
+ | |GpuSubtensor{::, 0:199:} [@H] <CudaNdarrayType(float32, matrix)> ''   
  |   |GpuElemwise{mul,no_inplace} [@C] <CudaNdarrayType(float32, matrix)> ''   
- |CudaNdarrayConstant{0.0} [@G] <CudaNdarrayType(float32, scalar)>
-
-Apply node that caused the error: forall_inplace,gpu,scan_fn}(Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[minimum(maximum(i0, i1), i2)]}(maximum(i0, i1), sub(i2, i3), i4)]}(maximum(i0, i1), i0, i2, i3, i4)]}(i0, sub(i1, i2), i3, i2, i4)]}(i0, add(i1, i2), i2, i3, i4)]}(sub(i0, i1), i2, i1, i3, i4)]}}.0, GpuElemwise{mul,no_inplace}.0, GpuElemwise{mul,no_inplace}.0, GpuElemwise{mul,no_inplace}.0, GpuElemwise{mul,no_inplace}.0, GpuIncSubtensor{InplaceSet;:int64:}.0, GpuIncSubtensor{InplaceSet;:int64:}.0, W_ho, W_hf, W_cf, W_hi, W_ci, W_hc, W_co, GpuDimShuffle{x,0}.0, GpuDimShuffle{x,0}.0, GpuDimShuffle{x,0}.0, GpuDimShuffle{x,0}.0, GpuDimShuffle{x,0}.0, GpuDimShuffle{x,0}.0, GpuDimShuffle{x,0}.0, GpuDimShuffle{x,0}.0)
-Inputs shapes: [(), (1, 79, 200), (1, 79, 200), (1, 79, 200), (1, 79, 200), (2, 79, 200), (2, 79, 200), (200, 200), (200, 200), (200, 200), (200, 200), (200, 200), (200, 200), (200, 200), (1, 200), (1, 200), (1, 200), (1, 200), (1, 200), (1, 200), (1, 200), (1, 200)]
-Inputs strides: [(), (0, 200, 1), (0, 200, 1), (0, 200, 1), (0, 200, 1), (15800, 200, 1), (15800, 200, 1), (200, 1), (200, 1), (200, 1), (200, 1), (200, 1), (200, 1), (200, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1), (0, 1)]
-Inputs types: [TensorType(int64, scalar), CudaNdarrayType(float32, 3D), CudaNdarrayType(float32, 3D), CudaNdarrayType(float32, 3D), CudaNdarrayType(float32, 3D), CudaNdarrayType(float32, 3D), CudaNdarrayType(float32, 3D), CudaNdarrayType(float32, matrix), CudaNdarrayType(float32, matrix), CudaNdarrayType(float32, matrix), CudaNdarrayType(float32, matrix), CudaNdarrayType(float32, matrix), CudaNdarrayType(float32, matrix), CudaNdarrayType(float32, matrix), CudaNdarrayType(float32, row), CudaNdarrayType(float32, row), CudaNdarrayType(float32, row), CudaNdarrayType(float32, row), CudaNdarrayType(float32, row), CudaNdarrayType(float32, row), CudaNdarrayType(float32, row), CudaNdarrayType(float32, row)]
-Debugprint of the apply node: 
-forall_inplace,gpu,scan_fn}.0 [@A] <CudaNdarrayType(float32, 3D)> ''   
- |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[minimum(maximum(i0, i1), i2)]}(maximum(i0, i1), sub(i2, i3), i4)]}(maximum(i0, i1), i0, i2, i3, i4)]}(i0, sub(i1, i2), i3, i2, i4)]}(i0, add(i1, i2), i2, i3, i4)]}(sub(i0, i1), i2, i1, i3, i4)]}} [@B] <TensorType(int64, scalar)> ''   
- | |Elemwise{Composite{[Switch(LT(i0, i1), i1, i0)]}} [@C] <TensorType(int64, scalar)> ''   
- | | |Elemwise{add,no_inplace} [@D] <TensorType(int64, scalar)> ''   
- | | | |Elemwise{Composite{[Composite{[Composite{[Switch(GE(i0, i1), i2, i0)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i3, i4)]}(Composite{[Switch(i0, add(i1, i2), i1)]}(i0, i1, i2), i3, i4, i2, i5)]}} [@E] <TensorType(int64, scalar)> ''   
- | | | | |Elemwise{lt,no_inplace} [@F] <TensorType(int8, scalar)> ''   
- | | | | | |Elemwise{Composite{[Composite{[Composite{[Switch(i0, i1, maximum(i2, i3))]}(i0, i1, minimum(i2, i3), i4)]}(i0, i1, add(i2, i3), i4, i5)]}}[(0, 4)] [@G] <TensorType(int64, scalar)> ''   
- | | | | | | |Elemwise{le,no_inplace} [@H] <TensorType(int8, scalar)> ''   
- | | | | | | | |Elemwise{sub,no_inplace} [@I] <TensorType(int64, scalar)> ''   
- | | | | | | | | |Elemwise{Composite{[Switch(LT(i0, i1), i1, i0)]}} [@J] <TensorType(int64, scalar)> ''   
- | | | | | | | | | |Elemwise{switch,no_inplace} [@K] <TensorType(int64, scalar)> ''   
- | | | | | | | | | | |Elemwise{lt,no_inplace} [@L] <TensorType(int8, scalar)> ''   
- | | | | | | | | | | | |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- | | | | | | | | | | | | |train_x [@N] <CudaNdarrayType(float32, 3D)>
- | | | | | | | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | | | | | | |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- | | | | | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Switch(LT(i0, i1), i0, i1)]}(Composite{[Switch(LT(i0, i1), i1, i0)]}(i0, i1), i2)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i1, i3)]}(Composite{[Composite{[sub(i0, Switch(i1, i2, i3))]}(i0, LT(i1, i2), i2, i1)]}(i0, i1, i2), i2, i3, i4)]}(i0, Composite{[add(i0, int_div(i1, i0))]}(i1, i2), i3, i2, i4)]}(i0, i1, add(i2, i0), i3, i4)]}} [@P] <TensorType(int64, scalar)> ''   
- | | | | | | | |   |Elemwise{switch,no_inplace} [@K] <TensorType(int64, scalar)> ''   
- | | | | | | | |   |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | | | | | | | |   |TensorConstant{-1} [@R] <TensorType(int64, scalar)>
- | | | | | | | |   |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | | | |   |Elemwise{Composite{[Switch(LT(i0, i1), i1, i0)]}} [@J] <TensorType(int64, scalar)> ''   
- | | | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | | |TensorConstant{-1} [@R] <TensorType(int64, scalar)>
- | | | | | | |Elemwise{Composite{[Switch(LT(i0, i1), i1, i0)]}} [@J] <TensorType(int64, scalar)> ''   
- | | | | | | |Elemwise{switch,no_inplace} [@K] <TensorType(int64, scalar)> ''   
- | | | | | | |TensorConstant{0} [@S] <TensorType(int64, scalar)>
- | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | |Elemwise{Composite{[Composite{[Composite{[Switch(i0, i1, maximum(i2, i3))]}(i0, i1, minimum(i2, i3), i4)]}(i0, i1, add(i2, i3), i4, i5)]}}[(0, 4)] [@G] <TensorType(int64, scalar)> ''   
- | | | | |Elemwise{add,no_inplace} [@T] <TensorType(int64, scalar)> ''   
- | | | | | |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | | | | | |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | |TensorConstant{-1} [@U] <TensorType(int8, scalar)>
- | | | | |Elemwise{sub,no_inplace} [@V] <TensorType(int64, scalar)> ''   
- | | | |   |Elemwise{add,no_inplace} [@T] <TensorType(int64, scalar)> ''   
- | | | |   |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | | | |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | |Elemwise{Composite{[Composite{[Composite{[Switch(LT(i0, i1), add(i0, i2), i0)]}(Composite{[Composite{[Switch(GE(i0, i1), i2, Switch(i3, i2, i4))]}(i0, i1, i2, LE(i1, i3), i4)]}(i0, i1, i2, i3, i4), i3, i5)]}(i0, i1, add(i2, i3), i4, i5, i6)]}}[(0, 1)] [@W] <TensorType(int64, scalar)> ''   
- | | |TensorConstant{0} [@S] <TensorType(int64, scalar)>
- | | |Elemwise{sub,no_inplace} [@X] <TensorType(int64, scalar)> ''   
- | | | |Elemwise{add,no_inplace} [@T] <TensorType(int64, scalar)> ''   
- | | | |Elemwise{Composite{[Switch(LT(i0, i1), i0, i1)]}} [@Y] <TensorType(int64, scalar)> ''   
- | | |   |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | | |   |Elemwise{add,no_inplace} [@T] <TensorType(int64, scalar)> ''   
- | | |TensorConstant{2} [@Z] <TensorType(int64, scalar)>
- | | |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | |Elemwise{Composite{[Switch(LT(i0, i1), i0, i1)]}} [@Y] <TensorType(int64, scalar)> ''   
- | | |Elemwise{add,no_inplace} [@T] <TensorType(int64, scalar)> ''   
- | |Elemwise{Composite{[Composite{[Switch(LT(i0, i1), i1, i0)]}(add(i0, i1), i2)]}} [@BA] <TensorType(int64, scalar)> ''   
- | | |Elemwise{Composite{[Composite{[Composite{[Switch(GE(i0, i1), i2, i0)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i3, i4)]}(Composite{[Switch(i0, add(i1, i2), i1)]}(i0, i1, i2), i3, i4, i2, i5)]}}[(0, 5)] [@BB] <TensorType(int64, scalar)> ''   
- | | | |Elemwise{lt,no_inplace} [@BC] <TensorType(int8, scalar)> ''   
- | | | | |Elemwise{Composite{[Switch(i0, i1, maximum(i2, i3))]}}[(0, 2)] [@BD] <TensorType(int64, scalar)> ''   
- | | | | | |Elemwise{le,no_inplace} [@BE] <TensorType(int8, scalar)> ''   
- | | | | | | |Elemwise{Composite{[Composite{[Switch(LT(i0, i1), i1, i0)]}(Composite{[add(i0, sub(i1, i2))]}(i0, i1, i2), i3)]}} [@BF] <TensorType(int64, scalar)> ''   
- | | | | | | | |TensorConstant{-1} [@R] <TensorType(int64, scalar)>
- | | | | | | | |Elemwise{Composite{[Switch(LT(i0, i1), i1, i0)]}} [@BG] <TensorType(int64, scalar)> ''   
- | | | | | | | | |Elemwise{add,no_inplace} [@T] <TensorType(int64, scalar)> ''   
- | | | | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Switch(LT(i0, i1), i0, i1)]}(Composite{[Switch(LT(i0, i1), i1, i0)]}(i0, i1), i2)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i1, i3)]}(Composite{[Composite{[sub(i0, Switch(i1, i2, i3))]}(i0, LT(i1, i2), i2, i1)]}(i0, i1, i2), i2, i3, i4)]}(i0, Composite{[add(i0, int_div(i1, i0))]}(i1, i2), i3, i2, i4)]}} [@BH] <TensorType(int64, scalar)> ''   
- | | | | | | | | |Elemwise{add,no_inplace} [@T] <TensorType(int64, scalar)> ''   
- | | | | | | | | |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | | | | | | | | |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- | | | | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | | | | |Elemwise{Composite{[Switch(LT(i0, i1), i1, i0)]}} [@BG] <TensorType(int64, scalar)> ''   
- | | | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Switch(LT(i0, i1), i0, i1)]}(Composite{[Switch(LT(i0, i1), i1, i0)]}(i0, i1), i2)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i1, i3)]}(Composite{[Composite{[sub(i0, Switch(i1, i2, i3))]}(i0, LT(i1, i2), i2, i1)]}(i0, i1, i2), i2, i3, i4)]}(i0, Composite{[add(i0, int_div(i1, i0))]}(i1, i2), i3, i2, i4)]}} [@BH] <TensorType(int64, scalar)> ''   
- | | | | | |Elemwise{Add{output_types_preference=transfer_type{1}}}[(0, 1)] [@BI] <TensorType(int64, scalar)> ''   
- | | | | |   |TensorConstant{-1} [@R] <TensorType(int64, scalar)>
- | | | | |   |Elemwise{Composite{[Switch(LT(i0, i1), i1, i0)]}} [@BG] <TensorType(int64, scalar)> ''   
- | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | |Elemwise{Composite{[Switch(i0, i1, maximum(i2, i3))]}}[(0, 2)] [@BD] <TensorType(int64, scalar)> ''   
- | | | |Elemwise{add,no_inplace} [@T] <TensorType(int64, scalar)> ''   
- | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | |TensorConstant{-1} [@U] <TensorType(int8, scalar)>
- | | | |Elemwise{sub,no_inplace} [@V] <TensorType(int64, scalar)> ''   
- | | |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- |GpuElemwise{mul,no_inplace} [@BJ] <CudaNdarrayType(float32, 3D)> ''   
- | |GpuSubtensor{int64:int64:int8, ::, int32:int32:} [@BK] <CudaNdarrayType(float32, 3D)> ''   
- | | |train_x [@N] <CudaNdarrayType(float32, 3D)>
- | | |ScalarFromTensor [@BL] <int64> ''   
- | | | |Elemwise{Composite{[Switch(i0, i1, minimum(i2, i3))]}}[(0, 2)] [@BM] <TensorType(int64, scalar)> ''   
- | | |   |Elemwise{Composite{[LE(sub(i0, i1), i2)]}} [@BN] <TensorType(int8, scalar)> ''   
- | | |   | |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Switch(LT(i0, i1), i1, i0)]}(Composite{[Switch(GE(i0, i1), i1, i0)]}(i0, i1), i2)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i3, i1)]}(Composite{[Switch(LT(i0, i1), add(i0, i2), i0)]}(i0, i1, i2), i1, i3, i2)]}(Composite{[Switch(i0, i1, minimum(i2, i3))]}(i0, i1, i2, i3), i1, i3, i4)]}}[(0, 2)] [@BO] <TensorType(int64, scalar)> ''   
- | | |   | | |Elemwise{le,no_inplace} [@BP] <TensorType(int8, scalar)> ''   
- | | |   | | | |Elemwise{Composite{[Composite{[Composite{[Switch(i0, Switch(i1, i2, i3), Switch(i4, i5, i5))]}(i0, LT(i1, i2), i2, i1, LT(i3, i3), i3)]}(i0, add(i1, i1), i2, i1)]}} [@BQ] <TensorType(int64, scalar)> ''   
- | | |   | | | | |Elemwise{lt,no_inplace} [@L] <TensorType(int8, scalar)> ''   
- | | |   | | | | |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- | | |   | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | |   | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | |   | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | |   | | |Elemwise{Composite{[Composite{[Composite{[Switch(i0, Switch(i1, i2, i3), Switch(i4, i5, i5))]}(i0, LT(i1, i2), i2, i1, LT(i3, i3), i3)]}(i0, add(i1, i1), i2, i1)]}} [@BQ] <TensorType(int64, scalar)> ''   
- | | |   | | |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- | | |   | | |TensorConstant{-1} [@U] <TensorType(int8, scalar)>
- | | |   | |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Switch(LT(i0, i1), i0, i1)]}(Composite{[Switch(LT(i0, i1), i1, i0)]}(i0, i1), i2)]}(Composite{[Switch(GE(i0, i1), i1, i0)]}(i0, i1), i2, i3)]}(Composite{[Switch(LT(i0, i1), i1, i0)]}(i0, i1), i2, i1, i3)]}(Composite{[Switch(LT(i0, i1), add(i0, i2), i0)]}(i0, i1, i2), i1, i2, i3)]}(Composite{[Switch(i0, i1, minimum(i2, i3))]}(i0, i1, i2, i3), i1, i3, i4)]}} [@BR] <TensorType(int64, scalar)> ''   
- | | |   | | |Elemwise{le,no_inplace} [@BP] <TensorType(int8, scalar)> ''   
- | | |   | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | |   | | |TensorConstant{0} [@S] <TensorType(int64, scalar)>
- | | |   | | |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- | | |   | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Switch(LT(i0, i1), i1, i0)]}(Composite{[Switch(GE(i0, i1), i1, i0)]}(i0, i1), i2)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i3, i1)]}(Composite{[Switch(LT(i0, i1), add(i0, i2), i0)]}(i0, i1, i2), i1, i3, i2)]}(Composite{[Switch(i0, i1, minimum(i2, i3))]}(i0, i1, i2, i3), i1, i3, i4)]}}[(0, 2)] [@BO] <TensorType(int64, scalar)> ''   
- | | |   | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | |   |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | |   |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Switch(LT(i0, i1), i0, i1)]}(Composite{[Switch(LT(i0, i1), i1, i0)]}(i0, i1), i2)]}(Composite{[Switch(GE(i0, i1), i1, i0)]}(i0, i1), i2, i3)]}(Composite{[Switch(LT(i0, i1), i1, i0)]}(i0, i1), i2, i1, i3)]}(Composite{[Switch(LT(i0, i1), add(i0, i2), i0)]}(i0, i1, i2), i1, i2, i3)]}(Composite{[Switch(i0, i1, minimum(i2, i3))]}(i0, i1, i2, i3), i1, i3, i4)]}} [@BR] <TensorType(int64, scalar)> ''   
- | | |   |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- | | |ScalarFromTensor [@BS] <int64> ''   
- | | | |Elemwise{Composite{[Switch(i0, i1, minimum(i2, i3))]}}[(0, 2)] [@BT] <TensorType(int64, scalar)> ''   
- | | |   |Elemwise{Composite{[LE(sub(i0, i1), i2)]}} [@BN] <TensorType(int8, scalar)> ''   
- | | |   |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | |   |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Switch(LT(i0, i1), i1, i0)]}(Composite{[Switch(GE(i0, i1), i1, i0)]}(i0, i1), i2)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i3, i1)]}(Composite{[Switch(LT(i0, i1), add(i0, i2), i0)]}(i0, i1, i2), i1, i3, i2)]}(Composite{[Switch(i0, i1, minimum(i2, i3))]}(i0, i1, i2, i3), i1, i3, i4)]}}[(0, 2)] [@BO] <TensorType(int64, scalar)> ''   
- | | |   |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- | | |Constant{1} [@BU] <int8>
- | | |ScalarFromTensor [@BV] <int32> ''   
- | | | |Elemwise{mul,no_inplace} [@BW] <TensorType(int32, scalar)> ''   
- | | |   |TensorConstant{200} [@BX] <TensorType(int32, scalar)>
- | | |   |index [@BY] <TensorType(int32, scalar)>
- | | |ScalarFromTensor [@BZ] <int32> ''   
- | |   |Elemwise{Composite{[mul(i0, add(i1, i2))]}} [@CA] <TensorType(int32, scalar)> ''   
- | |     |TensorConstant{200} [@BX] <TensorType(int32, scalar)>
- | |     |TensorConstant{1} [@CB] <TensorType(int32, scalar)>
- | |     |index [@BY] <TensorType(int32, scalar)>
- | |GpuDimShuffle{x,x,0} [@CC] <CudaNdarrayType(float32, (True, True, False))> ''   
- |   |W_xc [@CD] <CudaNdarrayType(float32, vector)>
- |GpuElemwise{mul,no_inplace} [@CE] <CudaNdarrayType(float32, 3D)> ''   
- | |GpuSubtensor{int64:int64:int8, ::, int32:int32:} [@BK] <CudaNdarrayType(float32, 3D)> ''   
- | |GpuDimShuffle{x,x,0} [@CF] <CudaNdarrayType(float32, (True, True, False))> ''   
- |   |W_xi [@CG] <CudaNdarrayType(float32, vector)>
- |GpuElemwise{mul,no_inplace} [@CH] <CudaNdarrayType(float32, 3D)> ''   
- | |GpuSubtensor{int64:int64:int8, ::, int32:int32:} [@BK] <CudaNdarrayType(float32, 3D)> ''   
- | |GpuDimShuffle{x,x,0} [@CI] <CudaNdarrayType(float32, (True, True, False))> ''   
- |   |W_xf [@CJ] <CudaNdarrayType(float32, vector)>
- |GpuElemwise{mul,no_inplace} [@CK] <CudaNdarrayType(float32, 3D)> ''   
- | |GpuSubtensor{int64:int64:int8, ::, int32:int32:} [@BK] <CudaNdarrayType(float32, 3D)> ''   
- | |GpuDimShuffle{x,x,0} [@CL] <CudaNdarrayType(float32, (True, True, False))> ''   
- |   |W_xo [@CM] <CudaNdarrayType(float32, vector)>
- |GpuIncSubtensor{InplaceSet;:int64:} [@CN] <CudaNdarrayType(float32, 3D)> ''   
- | |GpuAlloc{memset_0=True} [@CO] <CudaNdarrayType(float32, 3D)> ''   
- | | |CudaNdarrayConstant{[[[ 0.]]]} [@CP] <CudaNdarrayType(float32, (True, True, True))>
- | | |Elemwise{Composite{[Composite{[add(Switch(i0, i1, i2), i3)]}(LT(i0, i1), add(i0, i1), sub(i0, i1), i1)]}} [@CQ] <TensorType(int64, scalar)> ''   
- | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[maximum(maximum(i0, i1), maximum(i2, i1))]}(add(i0, i1), i1, add(i2, i1))]}(sub(i0, i1), i2, sub(i0, i3))]}(i0, i1, i2, Switch(i3, i4, i5))]}(i0, i1, i2, LT(i3, i4), i3, i4)]}(i0, i1, i2, Composite{[Switch(LT(i0, i1), i1, i0)]}(i3, i4), i5)]}(i0, i1, i2, Composite{[Switch(LT(i0, i1), sub(i2, i3), i0)]}(i3, i4, i5, i2), i4, i6)]}(i0, i1, i2, Composite{[Composite{[Composite{[Composite{[sub(sub(i0, i1), i2)]}(i0, sub(i1, i2), i2)]}(i0, Switch(i1, i2, i3), i4)]}(i0, LT(i1, i2), i2, i1, i3)]}(i3, i4, i5, i2), i5, i3, i6)]}(i0, i1, i2, i3, Composite{[Composite{[add(int_div(i0, i1), i1)]}(sub(i0, i1), i1)]}(i4, i2), i5, i6)]}}[(0, 3)] [@CR] <TensorType(int64, scalar)> ''   
- | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[minimum(maximum(i0, i1), i2)]}(maximum(i0, i1), sub(i2, i3), i4)]}(maximum(i0, i1), i0, i2, i3, i4)]}(i0, sub(i1, i2), i3, i2, i4)]}(i0, add(i1, i2), i2, i3, i4)]}(sub(i0, i1), i2, i1, i3, i4)]}} [@B] <TensorType(int64, scalar)> ''   
- | | | | |Elemwise{Composite{[Composite{[Composite{[Switch(LT(i0, i1), add(i0, i2), i0)]}(Composite{[Composite{[Switch(GE(i0, i1), i2, Switch(i3, i2, i4))]}(i0, i1, i2, LE(i1, i3), i4)]}(i0, i1, i2, i3, i4), i3, i5)]}(i0, i1, add(i2, i3), i4, i5, i6)]}}[(0, 1)] [@W] <TensorType(int64, scalar)> ''   
- | | | | |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | | | | |Elemwise{add,no_inplace} [@D] <TensorType(int64, scalar)> ''   
- | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[sub(i0, Switch(i1, i2, i3))]}(i0, GE(i1, i2), i2, i1)]}(i0, Composite{[Switch(LT(i0, i1), i2, i0)]}(i1, i2, i3), i4)]}(i0, Composite{[Switch(i0, add(i1, i2), i1)]}(i1, i2, i3), i4, i5, i3)]}}[(0, 2)] [@CS] <TensorType(int64, scalar)> ''   
- | | | | | |Elemwise{Composite{[Composite{[Composite{[Switch(GE(i0, i1), i2, i0)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i3, i4)]}(Composite{[Switch(i0, add(i1, i2), i1)]}(i0, i1, i2), i3, i4, i2, i5)]}} [@E] <TensorType(int64, scalar)> ''   
- | | | | | |Elemwise{lt,no_inplace} [@CT] <TensorType(int8, scalar)> ''   
- | | | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Switch(i0, i1, Switch(i2, i3, i4))]}(i0, i1, AND(i2, i3), i4, minimum(i5, i6))]}(i0, i1, LT(i2, i1), GT(i3, i1), i4, i2, i5)]}(i0, i1, add(i2, i3), i4, i5, i6)]}} [@CU] <TensorType(int64, scalar)> ''   
- | | | | | | | |Elemwise{le,no_inplace} [@H] <TensorType(int8, scalar)> ''   
- | | | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | | | |TensorConstant{-1} [@R] <TensorType(int64, scalar)>
- | | | | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Switch(LT(i0, i1), i0, i1)]}(Composite{[Switch(LT(i0, i1), i1, i0)]}(i0, i1), i2)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i1, i3)]}(Composite{[Composite{[sub(i0, Switch(i1, i2, i3))]}(i0, LT(i1, i2), i2, i1)]}(i0, i1, i2), i2, i3, i4)]}(i0, Composite{[add(i0, int_div(i1, i0))]}(i1, i2), i3, i2, i4)]}(i0, i1, add(i2, i0), i3, i4)]}} [@P] <TensorType(int64, scalar)> ''   
- | | | | | | | |Elemwise{sub,no_inplace} [@I] <TensorType(int64, scalar)> ''   
- | | | | | | | |Elemwise{sub,no_inplace} [@CV] <TensorType(int64, scalar)> ''   
- | | | | | | | | |TensorConstant{-2} [@CW] <TensorType(int64, scalar)>
- | | | | | | | | |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- | | | | | | | |Elemwise{switch,no_inplace} [@K] <TensorType(int64, scalar)> ''   
- | | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Switch(i0, i1, Switch(i2, i3, i4))]}(i0, i1, AND(i2, i3), i4, minimum(i5, i6))]}(i0, i1, LT(i2, i1), GT(i3, i1), i4, i2, i5)]}(i0, i1, add(i2, i3), i4, i5, i6)]}} [@CU] <TensorType(int64, scalar)> ''   
- | | | | | |Elemwise{add,no_inplace} [@T] <TensorType(int64, scalar)> ''   
- | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | |TensorConstant{-1} [@U] <TensorType(int8, scalar)>
- | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | |Elemwise{Composite{[Switch(LT(i0, i1), i1, i0)]}} [@C] <TensorType(int64, scalar)> ''   
- | | | |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | | |Shape_i{0} [@CX] <TensorType(int64, scalar)> ''   
- | | | |h0 [@CY] <CudaNdarrayType(float32, matrix)>
- | | |Shape_i{1} [@CZ] <TensorType(int64, scalar)> ''   
- | |   |h0 [@CY] <CudaNdarrayType(float32, matrix)>
- | |Rebroadcast{0} [@DA] <CudaNdarrayType(float32, 3D)> ''   
- | | |GpuDimShuffle{x,0,1} [@DB] <CudaNdarrayType(float32, (True, False, False))> ''   
- | |   |h0 [@CY] <CudaNdarrayType(float32, matrix)>
- | |Constant{1} [@DC] <int64>
- |GpuIncSubtensor{InplaceSet;:int64:} [@DD] <CudaNdarrayType(float32, 3D)> ''   
- | |GpuAlloc{memset_0=True} [@DE] <CudaNdarrayType(float32, 3D)> ''   
- | | |CudaNdarrayConstant{[[[ 0.]]]} [@CP] <CudaNdarrayType(float32, (True, True, True))>
- | | |Elemwise{Composite{[Composite{[add(Switch(i0, i1, i2), i3)]}(LT(i0, i1), add(i0, i1), sub(i0, i1), i1)]}} [@DF] <TensorType(int64, scalar)> ''   
- | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[maximum(maximum(i0, i1), maximum(i2, i1))]}(add(i0, i1), i1, add(i2, i1))]}(sub(i0, i1), i2, sub(i0, i3))]}(i0, Switch(i1, i2, i3), i4, Switch(i5, i6, i7))]}(i0, LT(i1, i2), i1, i2, i3, LT(i4, i5), i4, i5)]}(i0, Composite{[Switch(LT(i0, i1), i1, i0)]}(i1, i2), Composite{[Switch(LT(i0, i1), i1, i0)]}(i3, i2), i4, Composite{[Switch(LT(i0, i1), i1, i0)]}(i5, i2), Composite{[Switch(LT(i0, i1), i1, i0)]}(i6, i2))]}(i0, Composite{[Switch(LT(i0, i1), sub(i2, i3), i0)]}(i1, i2, i3, i4), i2, i3, i4, Composite{[Switch(LT(i0, i1), sub(i2, i3), i0)]}(i5, i2, i6, i4), i6)]}(i0, Composite{[Composite{[Composite{[Composite{[sub(sub(i0, i1), i2)]}(i0, sub(i1, i2), i2)]}(i0, Switch(i1, i2, i3), i4)]}(i0, LT(i1, i2), i2, i1, i3)]}(i1, i2, i3, i4), i3, i1, i4, Composite{[Composite{[Composite{[Composite{[sub(sub(i0, i1), i2)]}(i0, sub(i1, i2), i2)]}(i0, Switch(i1, i2, i3), i4)]}(i0, LT(i1, i2), i2, i1, i3)]}(i5, i6, i3, i4), i5)]}(i0, i1, Composite{[Composite{[Composite{[Composite{[Composite{[add(int_div(i0, i1), i1)]}(sub(i0, i1), i1)]}(sub(i0, i1), i2)]}(i0, Switch(i1, i2, i3), i4)]}(i0, GE(i1, i2), i2, i1, i3)]}(i2, i3, i4, i5), i6, i5, i7, Composite{[Composite{[Composite{[Composite{[Composite{[add(int_div(i0, i1), i1)]}(sub(i0, i1), i1)]}(sub(i0, i1), i2)]}(i0, Switch(i1, i2, i3), i4)]}(i0, GE(i1, i2), i2, i1, i3)]}(i8, i9, i4, i5))]}(i0, i1, i2, Composite{[Switch(LT(i0, i1), i2, i0)]}(i3, i4, i5), i6, i7, i4, i8, i9, Composite{[Switch(LT(i0, i1), i2, i0)]}(i10, i4, i5))]}(i0, i1, i2, Composite{[Switch(i0, add(i1, i2), i1)]}(i3, i4, i5), i6, i7, i5, i8, i9, i10, Composite{[Switch(i0, add(i1, i2), i1)]}(i11, i12, i5))]}(i0, add(i1, i2), i1, i3, i4, i5, i6, i7, i2, add(i8, i2), i8, i9, i10)]}(i0, Composite{[Composite{[Composite{[Switch(GE(i0, i1), i2, i0)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i3, i4)]}(Composite{[Switch(i0, add(i1, i2), i1)]}(i0, i1, i2), i3, i4, i2, i5)]}(i1, i2, i3, i4, i5, i6), i7, i8, i9, i3, i4, i5, Composite{[Composite{[Composite{[Switch(GE(i0, i1), i2, i0)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i3, i4)]}(Composite{[Switch(i0, add(i1, i2), i1)]}(i0, i1, i2), i3, i4, i2, i5)]}(i10, i11, i3, i4, i5, i6), i12, i13)]}(i0, i1, i2, i3, i4, i5, sub(i3, i6), i6, i7, i8, i9, i10, i11, i12)]}}[(0, 2)] [@DG] <TensorType(int64, scalar)> ''   
- | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Composite{[minimum(maximum(i0, i1), i2)]}(maximum(i0, i1), sub(i2, i3), i4)]}(maximum(i0, i1), i0, i2, i3, i4)]}(i0, sub(i1, i2), i3, i2, i4)]}(i0, add(i1, i2), i2, i3, i4)]}(sub(i0, i1), i2, i1, i3, i4)]}} [@B] <TensorType(int64, scalar)> ''   
- | | | | |Elemwise{lt,no_inplace} [@BC] <TensorType(int8, scalar)> ''   
- | | | | |Elemwise{Composite{[Switch(i0, i1, maximum(i2, i3))]}}[(0, 2)] [@BD] <TensorType(int64, scalar)> ''   
- | | | | |Elemwise{add,no_inplace} [@DH] <TensorType(int64, scalar)> ''   
- | | | | | |Shape_i{0} [@M] <TensorType(int64, scalar)> ''   
- | | | | | |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | |TensorConstant{-1} [@U] <TensorType(int8, scalar)>
- | | | | |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | | | | |Elemwise{lt,no_inplace} [@DI] <TensorType(int8, scalar)> ''   
- | | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Switch(i0, i1, Switch(i2, i3, i4))]}(i0, i1, AND(i2, i3), i4, maximum(i5, i6))]}(i0, i1, LT(i2, i1), GT(i3, i1), i4, add(i5, i6), i2)]}(i0, i1, sub(i2, i3), i3, i4, i5, i6)]}}[(0, 4)] [@DJ] <TensorType(int64, scalar)> ''   
- | | | | | | |Elemwise{le,no_inplace} [@BE] <TensorType(int8, scalar)> ''   
- | | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | | | |Elemwise{Add{output_types_preference=transfer_type{1}}}[(0, 1)] [@BI] <TensorType(int64, scalar)> ''   
- | | | | | | |Elemwise{Composite{[Composite{[Switch(LT(i0, i1), i1, i0)]}(Composite{[add(i0, sub(i1, i2))]}(i0, i1, i2), i3)]}} [@BF] <TensorType(int64, scalar)> ''   
- | | | | | | |Elemwise{sub,no_inplace} [@CV] <TensorType(int64, scalar)> ''   
- | | | | | | |TensorConstant{-1} [@R] <TensorType(int64, scalar)>
- | | | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Composite{[Switch(LT(i0, i1), i0, i1)]}(Composite{[Switch(LT(i0, i1), i1, i0)]}(i0, i1), i2)]}(Composite{[Switch(LT(i0, i1), i2, i0)]}(i0, i1, i2), i1, i3)]}(Composite{[Composite{[sub(i0, Switch(i1, i2, i3))]}(i0, LT(i1, i2), i2, i1)]}(i0, i1, i2), i2, i3, i4)]}(i0, Composite{[add(i0, int_div(i1, i0))]}(i1, i2), i3, i2, i4)]}} [@BH] <TensorType(int64, scalar)> ''   
- | | | | | |TensorConstant{0} [@O] <TensorType(int8, scalar)>
- | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Switch(i0, i1, Switch(i2, i3, i4))]}(i0, i1, AND(i2, i3), i4, maximum(i5, i6))]}(i0, i1, LT(i2, i1), GT(i3, i1), i4, add(i5, i6), i2)]}(i0, i1, sub(i2, i3), i3, i4, i5, i6)]}}[(0, 4)] [@DJ] <TensorType(int64, scalar)> ''   
- | | | | |Elemwise{lt,no_inplace} [@F] <TensorType(int8, scalar)> ''   
- | | | | |Elemwise{Composite{[Composite{[Composite{[Switch(i0, i1, maximum(i2, i3))]}(i0, i1, minimum(i2, i3), i4)]}(i0, i1, add(i2, i3), i4, i5)]}}[(0, 4)] [@G] <TensorType(int64, scalar)> ''   
- | | | | |Elemwise{lt,no_inplace} [@CT] <TensorType(int8, scalar)> ''   
- | | | | |Elemwise{Composite{[Composite{[Composite{[Composite{[Switch(i0, i1, Switch(i2, i3, i4))]}(i0, i1, AND(i2, i3), i4, minimum(i5, i6))]}(i0, i1, LT(i2, i1), GT(i3, i1), i4, i2, i5)]}(i0, i1, add(i2, i3), i4, i5, i6)]}} [@CU] <TensorType(int64, scalar)> ''   
- | | | |TensorConstant{1} [@Q] <TensorType(int64, scalar)>
- | | |Shape_i{0} [@DK] <TensorType(int64, scalar)> ''   
- | | | |c0 [@DL] <CudaNdarrayType(float32, matrix)>
- | | |Shape_i{1} [@DM] <TensorType(int64, scalar)> ''   
- | |   |c0 [@DL] <CudaNdarrayType(float32, matrix)>
- | |Rebroadcast{0} [@DN] <CudaNdarrayType(float32, 3D)> ''   
- | | |GpuDimShuffle{x,0,1} [@DO] <CudaNdarrayType(float32, (True, False, False))> ''   
- | |   |c0 [@DL] <CudaNdarrayType(float32, matrix)>
- | |Constant{1} [@DC] <int64>
- |W_ho [@DP] <CudaNdarrayType(float32, matrix)>
- |W_hf [@DQ] <CudaNdarrayType(float32, matrix)>
- |W_cf [@DR] <CudaNdarrayType(float32, matrix)>
- |W_hi [@DS] <CudaNdarrayType(float32, matrix)>
- |W_ci [@DT] <CudaNdarrayType(float32, matrix)>
- |W_hc [@DU] <CudaNdarrayType(float32, matrix)>
- |W_co [@DV] <CudaNdarrayType(float32, matrix)>
- |GpuDimShuffle{x,0} [@DW] <CudaNdarrayType(float32, row)> ''   
- | |bc [@DX] <CudaNdarrayType(float32, vector)>
- |GpuDimShuffle{x,0} [@DY] <CudaNdarrayType(float32, row)> ''   
- | |W_hhc [@DZ] <CudaNdarrayType(float32, vector)>
- |GpuDimShuffle{x,0} [@EA] <CudaNdarrayType(float32, row)> ''   
- | |bi [@EB] <CudaNdarrayType(float32, vector)>
- |GpuDimShuffle{x,0} [@EC] <CudaNdarrayType(float32, row)> ''   
- | |W_hhi [@ED] <CudaNdarrayType(float32, vector)>
- |GpuDimShuffle{x,0} [@EE] <CudaNdarrayType(float32, row)> ''   
- | |bf [@EF] <CudaNdarrayType(float32, vector)>
- |GpuDimShuffle{x,0} [@EG] <CudaNdarrayType(float32, row)> ''   
- | |W_hhf [@EH] <CudaNdarrayType(float32, vector)>
- |GpuDimShuffle{x,0} [@EI] <CudaNdarrayType(float32, row)> ''   
- | |bo [@EJ] <CudaNdarrayType(float32, vector)>
- |GpuDimShuffle{x,0} [@EK] <CudaNdarrayType(float32, row)> ''   
-   |W_hho [@EL] <CudaNdarrayType(float32, vector)>
-forall_inplace,gpu,scan_fn}.1 [@A] <CudaNdarrayType(float32, 3D)> ''   
+ |CudaNdarrayConstant{0.0} [@I] <CudaNdarrayType(float32, scalar)>
