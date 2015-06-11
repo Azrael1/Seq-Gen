@@ -11,7 +11,7 @@ Using gpu device 0: GeForce GTX 850M
 /home/azrael/anaconda/lib/python2.7/site-packages/theano/tensor/subtensor.py:190: FutureWarning: comparison to `None` will result in an elementwise object comparison in the future.
   if stop in [None, maxsize]:
 Compiling time is  998.259691
-... Training the model. Booyah bitch!!
+... Training the model.
 WARNING: ('Stride mismatch', ((200, 1), (200, 1), (4, 800), (4, 4), 'DimShuffle{1,0}'))
 WARNING: ('Stride mismatch', ((200, 1), (200, 1), (4, 800), (4, 4), 'DimShuffle{1,0}'))
 Traceback (most recent call last):
