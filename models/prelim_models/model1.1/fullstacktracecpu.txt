@@ -10,7 +10,7 @@ azrael@azrael-G551JK:~/Documents/nn/code/prelim1$ THEANO_FLAGS='exception_verbos
 /home/azrael/anaconda/lib/python2.7/site-packages/theano/tensor/subtensor.py:190: FutureWarning: comparison to `None` will result in an elementwise object comparison in the future.
   if stop in [None, maxsize]:
 Compiling time is  629.372957945
-... Training the model. Booyah bitch!!
+... Training the model. 
 WARNING: ('Stride mismatch', ((200, 1), (200, 1), (4, 800), (4, 4), 'DimShuffle{1,0}'))
 WARNING: ('Stride mismatch', ((200, 1), (200, 1), (4, 800), (4, 4), 'DimShuffle{1,0}'))
 WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
