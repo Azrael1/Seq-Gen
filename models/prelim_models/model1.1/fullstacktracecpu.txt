@@ -1,0 +1,43 @@
+azrael@azrael-G551JK:~/Documents/nn/code/prelim1$ THEANO_FLAGS='exception_verbosity=high, device=cpu' python combine.py
+/home/azrael/anaconda/lib/python2.7/site-packages/theano/tensor/subtensor.py:110: FutureWarning: comparison to `None` will result in an elementwise object comparison in the future.
+  start in [None, 0] or
+/home/azrael/anaconda/lib/python2.7/site-packages/theano/tensor/subtensor.py:114: FutureWarning: comparison to `None` will result in an elementwise object comparison in the future.
+  stop in [None, length, maxsize] or
+/home/azrael/anaconda/lib/python2.7/site-packages/theano/tensor/opt.py:2165: FutureWarning: comparison to `None` will result in an elementwise object comparison in the future.
+  if (replace_x == replace_y and
+/home/azrael/anaconda/lib/python2.7/site-packages/theano/scan_module/scan_perform_ext.py:85: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility
+  from scan_perform.scan_perform import *
+/home/azrael/anaconda/lib/python2.7/site-packages/theano/tensor/subtensor.py:190: FutureWarning: comparison to `None` will result in an elementwise object comparison in the future.
+  if stop in [None, maxsize]:
+Compiling time is  629.372957945
+... Training the model. Booyah bitch!!
+WARNING: ('Stride mismatch', ((200, 1), (200, 1), (4, 800), (4, 4), 'DimShuffle{1,0}'))
+WARNING: ('Stride mismatch', ((200, 1), (200, 1), (4, 800), (4, 4), 'DimShuffle{1,0}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'InplaceDimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'InplaceDimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'DimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((1, 200, 79), (1, 200, 79), (63200, 4, 800), (800, 4, 800), 'InplaceDimShuffle{0,2,1}'))
+WARNING: ('Stride mismatch', ((200, 1, 79), (200, 1, 79), (316, 63200, 4), (316, 316, 4), 'InplaceDimShuffle{1,0,2}'))
+WARNING: ('Stride mismatch', ((200, 1, 79), (200, 1, 79), (316, 63200, 4), (316, 316, 4), 'DimShuffle{1,0,2}'))
+WARNING: ('Stride mismatch', ((200, 1, 79), (200, 1, 79), (316, 63200, 4), (316, 316, 4), 'InplaceDimShuffle{1,0,2}'))
+WARNING: ('Stride mismatch', ((200, 1, 79), (200, 1, 79), (316, 63200, 4), (316, 316, 4), 'DimShuffle{1,0,2}'))
+epoch no is 0 valid loss is  873.889526367 output is  ""uae,)0",B(3t2HjZq6=u)rtbV(G.ar55 vi-??it4.Y-- T/:tLNnU Ee0DJD.G:NzTCwF.T/0.
+d TAZJsV"7TTnY Mt?Z0.OvFsLlJG-()TY,coSrA* HS5 0M,vfXnC"Y VP'i71E99ovo6
+Number of seconds model has been running %% 8.15641593933
+test loss is 873.889526367 and prediction is ""uae,)0",B(3t2Hjiq6=s)PteViG.ar55 vib?
+
+*4.Ye- T/:pLNnUeEng JD.G:NzTCwF-T/d.iYQ'LmOGTnQ(:?MTv6T8ZVD863ijLEypSWlw
+XKrA*CHS5
+8M,vfXCC"YqVP'i71E99wio6*U8TPyseoAioc
+TAZJsV"iTTlY Mt?Z0.OvFsLlJG-(eTY,coS
