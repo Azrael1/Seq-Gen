@@ -128,12 +128,19 @@ In RNNStackedLayers, the bias dimensions are kept as vec_dims, when it should be
 When I keep it as one, then Shape error shows up.
 """
 
+"""
+PROBLEMS IN OUTPUT:
+
+1) Seems to be due to a combination of weights and learning rate. Properly initialize weights and learning rate.
+2) The for loop does not seem to be properly working. Looks like it is giving the same input/ compilation is happening
+"""
+
 n_in = 8
 n_in_tree = 4
 vec_file = '/home/azrael/Documents/nn/code/vectors.6B.50d.txt'
 vec_dims = 50
 assert_op = T.opt.Assert()
-n_nodes = 100
+n_nodes = 500
 rng = np.random.RandomState(1)
 doc_path = '/home/azrael/Documents/nn/code/wikisample.txt'
 word_vecs, mappings_words, mappings_vec = load_vecs(vec_file, doc_path, vec_dims)
@@ -185,29 +192,31 @@ class TreeLSTMLayer(object):
         weights_shape = (vec_dims, self.n_in/2)
         biases_shape = self.n_in/2
         # Required later for broadcasting purposes.
+        low = -0.5
+        high = 0.5
 
-        self.W_hiL = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_hiL')
-        self.W_hiR = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_hiR')
-        self.W_ciL = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_ciL')
-        self.W_ciR = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_ciR')
-        self.W_hflL = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_hflL')
-        self.W_hfrL = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_hfrL')
-        self.W_cflL = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_cflL')
-        self.W_cfrL = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_cfrL')
-        self.W_hflR = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_hflR')
-        self.W_hfrR = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_hfrR')
-        self.W_cflR = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_cflR')
-        self.W_cfrR = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_cflR')
-        self.W_hxL = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_hxL')
-        self.W_hxR = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_hxR')
-        self.W_hoL = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_hoL')
-        self.W_hoR = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_hoR')
-        self.W_co = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, weights_shape), dtype='float32'), borrow=True, name='W_co')
-        self.bi = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, biases_shape), dtype='float32'), borrow=True, name='bi')
-        self.bfl = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, biases_shape), dtype='float32'), borrow=True, name='bfl')
-        self.bfr = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, biases_shape), dtype='float32'), borrow=True, name='bfr')
-        self.bx = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, biases_shape), dtype='float32'), borrow=True, name='bx')
-        self.bo = theano.shared(value=np.asarray(rng.uniform(-0.05, 0.05, biases_shape), dtype='float32'), borrow=True, name='bo')
+        self.W_hiL = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_hiL')
+        self.W_hiR = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_hiR')
+        self.W_ciL = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_ciL')
+        self.W_ciR = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_ciR')
+        self.W_hflL = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_hflL')
+        self.W_hfrL = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_hfrL')
+        self.W_cflL = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_cflL')
+        self.W_cfrL = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_cfrL')
+        self.W_hflR = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_hflR')
+        self.W_hfrR = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_hfrR')
+        self.W_cflR = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_cflR')
+        self.W_cfrR = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_cflR')
+        self.W_hxL = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_hxL')
+        self.W_hxR = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_hxR')
+        self.W_hoL = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_hoL')
+        self.W_hoR = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_hoR')
+        self.W_co = theano.shared(value=np.asarray(rng.uniform(low, high, weights_shape), dtype='float32'), borrow=True, name='W_co')
+        self.bi = theano.shared(value=np.asarray(rng.uniform(low, high, biases_shape), dtype='float32'), borrow=True, name='bi')
+        self.bfl = theano.shared(value=np.asarray(rng.uniform(low, high, biases_shape), dtype='float32'), borrow=True, name='bfl')
+        self.bfr = theano.shared(value=np.asarray(rng.uniform(low, high, biases_shape), dtype='float32'), borrow=True, name='bfr')
+        self.bx = theano.shared(value=np.asarray(rng.uniform(low, high, biases_shape), dtype='float32'), borrow=True, name='bx')
+        self.bo = theano.shared(value=np.asarray(rng.uniform(low, high, biases_shape), dtype='float32'), borrow=True, name='bo')
         self.params = [self.W_hiL, self.W_hiR, self.W_ciL, self.W_ciR, self.W_hflL, self.W_hfrL, self.W_cflL,
                        self.W_cfrL, self.W_hflR, self.W_hfrR, self.W_cflR, self.W_cfrR, self.W_hxL, self.W_hxR,
                        self.W_hoL, self.W_hoR, self.W_co, self.bi, self.bfl, self.bfr, self.bx, self.bo]
@@ -244,7 +253,7 @@ class TreeLSTM(object):
     # Does not have parse structured tree support. Works on 2**x (x is integer) length of sentences.
     def __init__(self, n_in_tree):
         print 'Initialing TreeLSTM...'
-        assert n_in_tree/int(n_in_tree) == 1 
+        assert n_in_tree/int(n_in_tree) == 1
         self.n_in = n_in_tree
         self.params = []
         print 'Successfully initialized'
@@ -264,13 +273,13 @@ class TreeLSTM(object):
         h_t__ = assert_op(h_t_, T.eq(h_t_.shape[0], vec_dims), T.eq(h_t_.shape[1], 1))
         print 'Completed tree output...'
         return h_t__  # Extra dimension not removed. It is used later in SentenceLSTMLayers.
-    
+
     def pred(self, output):
         W1, W2 = 0.5, 0.5
         pred = T.argmin(W1 * T.arccos(T.dot(output, mappings_vec)/(absolute(output)*absolute(mappings_vec, axis=0))) +
                         W2 * (absolute(mappings_vec, axis=0) - absolute(output)))
         return pred
-        
+
     def loss(self, y, output):
         print 'Calling TreeLSTM.loss()...'
         # y is a single output. No support for minibatches as of yet.
@@ -286,53 +295,70 @@ class RNNLayer(object):
     """
     def __init__(self, input_size, n_nodes):
         self.n_nodes = n_nodes
+        low, high = -0.5, 0.5
         temp_imp_size = n_nodes
         if input_size == 1:
             temp_imp_size = vec_dims
-        self.W_x = theano.shared(value=np.asarray(rng.uniform(-1.0, 1.0, (temp_imp_size, n_nodes)), 'float32'), borrow=True, name='W_x')
-        self.W_h = theano.shared(value=np.asarray(rng.uniform(-1.0, 1.0, (n_nodes, n_nodes)), 'float32'), borrow=True, name='W_h')
-        self.b = theano.shared(value=np.asarray(rng.uniform(-1.0, 1.0,  n_nodes), 'float32'), borrow=True, name='b')
+        self.W_x = theano.shared(value=np.asarray(rng.uniform(low, high, (temp_imp_size, n_nodes)), 'float32'), borrow=True, name='W_x')
+        self.W_h = theano.shared(value=np.asarray(rng.uniform(low, high, (n_nodes, n_nodes)), 'float32'), borrow=True, name='W_h')
+        self.b = theano.shared(value=np.asarray(rng.uniform(low, high,  n_nodes), 'float32'), borrow=True, name='b')
         self.h_t0 = theano.shared(value=np.asarray(np.zeros((vec_dims, n_nodes)), 'float32'), borrow=True, name='h_t0')
-        self.params = [self.W_h, self.W_x, self.b]        
-        
-    def output(self, x_t):
-        h_t, updates = theano.scan(fn=self.recurrence, sequences=x_t, outputs_info=[self.h_t0])
-        return h_t
-    
-    def recurrence(self, x, h_tm1):
-        h_tm1_ = assert_op(h_tm1, T.eq(h_tm1.shape[0], vec_dims), T.eq(h_tm1.shape[1], self.n_nodes))
-        h_t = sigmoid(T.dot(x, self.W_x) + T.dot(h_tm1_, self.W_h) + self.b)
-        return h_t
+        self.params = [self.W_x, self.W_h, self.b]
 
 class RNNStackedLayers(object):
     """
     Combination of stacked layers of type RNNLayer.
-    """    
+    """
     def __init__(self, n_nodes):
         # For now fixed number of layers. later, using scan can produce variable
         # number of layers.
-        self.W = theano.shared(value=np.asarray(rng.uniform(-1.0, 1.0, (vec_dims, n_nodes)), 'float32'), borrow=True, name='W')
-        self.b = theano.shared(value=np.asarray(rng.uniform(-1.0, 1.0, vec_dims), 'float32'), borrow=True, name='b')
-        self.params = [self.W, self.b]
-            
+        low, high = -0.5, 0.5
+        self.W = theano.shared(value=np.asarray(rng.uniform(low, high, (vec_dims, n_nodes)), 'float32'), borrow=True, name='W')
+        self.b = theano.shared(value=np.asarray(rng.uniform(low, high, vec_dims), 'float32'), borrow=True, name='b')
+        self.layer1 = RNNLayer(1, n_nodes)
+        self.layer2 = RNNLayer(n_nodes, n_nodes)
+
+        self.params = self.layer1.params + self.layer2.params + [self.W, self.b]
+
     def output(self, x_t):
-        layer1 = RNNLayer(1, n_nodes)
-        layer2 = RNNLayer(n_nodes, n_nodes)
-        layer1_output = layer1.output(x_t)
-        layer2_output = layer2.output(layer1_output)
-        # output is of shape: (n_timesteps, vec_dims, n_nodes)
-        final_output = T.sum(input=layer2_output[-1] * self.W, axis=1) + self.b
-        return assert_op(final_output, T.eq(final_output.ndim, 1), T.eq(final_output.shape[0], vec_dims))
-        # Taking the last output(last timestep of last layer) enforces a many to one relationship(explained in
-        # karpathy's char-rnn.)
-    
+        [layer1_out, layer2_out], updates = theano.scan(fn=self.oneStep, sequences=x_t, outputs_info=[self.layer1.h_t0, self.layer2.h_t0],
+                                                        non_sequences=[self.layer1.W_x, self.layer1.W_h, self.layer1.b,
+                                                                       self.layer2.W_x, self.layer2.W_h, self.layer2.b])
+        model_out = T.sum(input=layer2_out[-1] * self.W, axis=1) + self.b
+        return assert_op(model_out, T.eq(model_out.ndim, 1), T.eq(model_out.shape[0], vec_dims))
+
+    def oneStep(self, x_t, h1_tm1, h2_tm1, W1_x, W1_h, b1, W2_x, W2_h, b2):
+        h1_tm1_ = assert_op(h1_tm1, T.eq(h1_tm1.shape[0], vec_dims), T.eq(h1_tm1.shape[1], n_nodes))
+        h2_tm1_ = assert_op(h2_tm1, T.eq(h2_tm1.shape[0], vec_dims), T.eq(h2_tm1.shape[1], n_nodes))
+
+        h1_t = sigmoid(T.dot(x_t, W1_x) + T.dot(h1_tm1_, W1_h) + b1)
+        h2_t = sigmoid(T.dot(h1_t, W2_x) + T.dot(h2_tm1_, W2_h) + b2)
+        return h1_t, h2_t
+
+    def valid_output(self, x_t0, n_steps):
+        [x_t, layer1_out, layer2_out], updates = theano.scan(fn=self.valid_oneStep, outputs_info=[x_t0, self.layer1.h_t0, self.layer2.h_t0],
+                                                             non_sequences=[self.layer1.W_x, self.layer1.W_h, self.layer1.b,
+                                                                       self.layer2.W_x, self.layer2.W_h, self.layer2.b],
+                                                             n_steps=n_steps)
+
+        return assert_op(x_t, T.eq(x_t.shape[0], n_steps), T.eq(x_t.shape[1], vec_dims))
+
+    def valid_oneStep(self, x_tm1, h1_tm1, h2_tm1, W1_x, W1_h, b1, W2_x, W2_h, b2):
+        h1_tm1_ = assert_op(h1_tm1, T.eq(h1_tm1.shape[0], vec_dims), T.eq(h1_tm1.shape[1], n_nodes))
+        h2_tm1_ = assert_op(h2_tm1, T.eq(h2_tm1.shape[0], vec_dims), T.eq(h2_tm1.shape[1], n_nodes))
+
+        h1_t = sigmoid(T.dot(x_tm1, W1_x) + T.dot(h1_tm1_, W1_h) + b1)
+        h2_t = sigmoid(T.dot(h1_t, W2_x) + T.dot(h2_tm1_, W2_h) + b2)
+        x_t = T.sum(h2_t * self.W, axis=1) + self.b
+        return x_t, h1_t, h2_t
+
     def pred(self, output):
         W1 = 0.5
         W2 = 0.5
         pred = T.argmin(W1 * T.arccos(T.dot(output, mappings_vec)/(absolute(output)*absolute(mappings_vec, axis=0))) +
                         W2 * (absolute(mappings_vec, axis=0) - absolute(output)))
         return pred
-    
+
     def loss(self, y, output):
         print 'Calling TreeLSTM.loss()...'
         # y is a single output. No support for minibatches as of yet.
@@ -346,25 +372,30 @@ class SentenceLSTMLayers(object):
         print 'Calling SentenceLSTMLayers.__init__()...'
         assert (n_in_tree % 2 == 0), "Number of input nodes of LSTM tree has to be even"
         self.n_in_tree = n_in_tree
-        self.params = []
         self.n_nodes = n_nodes
-        print 'Successful initialization of SentenceLSTMLayers'        
-        
-    def output(self, vec_words):
+        self.lstm_tree = TreeLSTM(n_in_tree)
+        self.rnn_stacked = RNNStackedLayers(n_nodes)
+        self.params = self.lstm_tree.params + self.rnn_stacked.params
+        print 'Successful initialization of SentenceLSTMLayers'
+
+    def output(self, vec_words, n_steps=0, valid=False):
         # vec_words should have shape- (Vector dimensions, Number of words)
         print 'Calling SentenceLSTMLayers.output()...'
 
-        vec_words_ = assert_op(vec_words.T, T.eq(vec_words.shape[0], vec_dims), T.gt(vec_words.shape[1], self.n_in_tree))
-        vec_words_tree = vec_words[:, :self.n_in_tree]
-        vec_words_rem = vec_words_[self.n_in_tree:]
-        lstm_tree = TreeLSTM(self.n_in_tree)
-        lstm_tree_output = lstm_tree.tree_output(vec_words_tree)
-        x_t = T.concatenate([lstm_tree_output.T, vec_words_rem])
-        x_t_ = assert_op(x_t, T.eq(x_t.shape[0], n_in-n_in_tree+1), T.eq(x_t.shape[1], vec_dims))
-        rnn_stacked = RNNStackedLayers(self.n_nodes)
-        output = rnn_stacked.output(x_t_)
-        self.params += lstm_tree.params
-        self.params += rnn_stacked.params
+        if not valid:
+            vec_words_ = assert_op(vec_words.T, T.eq(vec_words.shape[0], vec_dims), T.gt(vec_words.shape[1], self.n_in_tree))
+            vec_words_tree = vec_words[:, :self.n_in_tree]
+            vec_words_rem = vec_words_[self.n_in_tree:]
+            lstm_tree_output = self.lstm_tree.tree_output(vec_words_tree)
+            x_t = T.concatenate([lstm_tree_output.T, vec_words_rem])
+            x_t_ = assert_op(x_t, T.eq(x_t.shape[0], n_in-n_in_tree+1), T.eq(x_t.shape[1], vec_dims))
+            output = self.rnn_stacked.output(x_t_)
+        else:
+            assert n_steps > 0
+            assert vec_words.ndim == 1
+            vec_words_ = assert_op(vec_words, T.eq(vec_words.shape[0], vec_dims))
+            x_t_ = vec_words_
+            output = self.rnn_stacked.valid_output(x_t_, n_steps)
         print 'SentenceLSTMLayers.output() successful'
         return output
 
@@ -422,24 +453,28 @@ def form_dataset(doc, n_in):
 
 train_x, train_y, word_labels = form_dataset(doc_path, n_in)
 
-def SGD(eta, n_minibatch, n_epochs, validation_steps, validation_interval, validation_headwords):
+def SGD(eta, n_minibatch, n_epochs, valid_steps, valid_interval, valid_headwords):
 
     # Testing and Validation data are the outputs of the last inputs.
     print 'Calling SGD() ..'
     t0 = time.time()
     index = T.iscalar('index')
     x, y = T.matrices('x', 'y')
-    print 'The length of validation_headwords is', len(validation_headwords)
-    print 'n_epochs * n_minibatch * n_in is', n_epochs * n_minibatch * n_in / validation_interval
+    print 'The length of valid_headwords is', len(valid_headwords)
+    print 'n_epochs * n_minibatch * n_in is', n_epochs * n_minibatch * n_in / valid_interval
     # minibatch size needs to be added later in assert statement.
-    assert len(validation_headwords) >= (n_epochs * n_minibatch * n_in)/ validation_interval, 'The length of validation_headwords need to be' \
-                                                                                              'greater than n_epochs * n_minibatch * n_in/ validation_interval'
+    assert len(valid_headwords) >= (n_epochs * n_minibatch)/ valid_interval, 'The length of valid_headwords need to be' \
+                                                                                       'greater than n_epochs * n_minibatch/ valid_interval'
     # Need to put  (* minibatch_size) when support for minibatches is introduced.
-    cur_model = SentenceLSTMLayers(n_in_tree, n_nodes)
-    cur_model_output = cur_model.output(x)
-    loss = cur_model.loss(y, cur_model_output)
-    pred = cur_model.pred(cur_model_output)
-    params = cur_model.params
+    model = SentenceLSTMLayers(n_in_tree, n_nodes)
+    model_output = model.output(x)
+    valid_output = model.output(x, n_steps=valid_steps, valid=True)
+
+    loss = model.loss(y, model_output)
+    pred = model.pred(model_output)
+    validation_pred = model.pred(valid_output)
+
+    params = model.params
     updates = [(param, param - eta * gparam) for param, gparam in zip(params, T.grad(loss, params))]
     # No need to return the updates by scan function within RNNStackedLayers. Only needed when shared variables are
     # updated within step function. This is not the case here. See this source
@@ -448,9 +483,7 @@ def SGD(eta, n_minibatch, n_epochs, validation_steps, validation_interval, valid
                                givens={x: train_x[:, n_in * index: n_in * (index + 1)],
                                        y: train_y[:, index: index + 1]})
 
-    valid_fn = theano.function([x], pred)
-
-    test_fn = theano.function([x], pred)
+    valid_fn = theano.function([x], validation_pred)
 
     # Compilation over
     #################
@@ -459,29 +492,24 @@ def SGD(eta, n_minibatch, n_epochs, validation_steps, validation_interval, valid
     words_seen = 0
     match_idx = 0
     valid_idx = 0
-    training_error = []
+    training_loss = []
     for i in range(n_epochs):
         print 'The current epoch number is', i
         t1 = time.time()
         for idx in range(n_minibatch):
             train_loss, train_pred = train_fn(idx)
-            training_error.append(train_loss)
-            training_error.append(train_loss)
-            if (i*n_minibatch+idx) % validation_interval == 0:
+            training_loss.append(train_loss)
+            if (i*n_minibatch+idx) % valid_interval == 0:
                 valid_op = []
-                cur_valid_headwords = validation_headwords[valid_idx * n_in: (valid_idx+1) * n_in]
-                cur_valid_input = np.asarray(sentence_vec(cur_valid_headwords, word_vecs), 'float32')
-                print 'The validation headwords for validation index =', valid_idx, 'are', \
-                       cur_valid_headwords[valid_idx * n_in: (valid_idx+1) * n_in]
-                valid_pred = valid_fn(cur_valid_input)
+                valid_headword = valid_headwords[valid_idx]
+                valid_input = word_vecs[valid_headword]
+                print '---------------------------------------------------------------'
+                assert valid_input.shape[0] == vec_dims, 'ASSERTION 1 FALSE'
+                print 'The validation headword for validation index =', valid_idx, 'is', \
+                       valid_headword
+                valid_pred = valid_fn(valid_input)
                 valid_op.append(valid_pred)
-                for j in range(validation_steps):
-                    added_word = np.asarray([np_array_vecs[valid_pred]]).T
-                    input_truncated = cur_valid_input[:, 1:]
-                    cur_valid_input = np.concatenate((input_truncated, added_word), axis=1)
-                    valid_pred = valid_fn(cur_valid_input)
-                    valid_op.append(valid_pred)
-                valid_idx += 1
+
                 print 'The validation prediction is', ' '.join([mappings_words[idx] for idx in valid_op])
         print 'Time taken by this epoch is', time.time()-t1
 
@@ -489,10 +517,10 @@ def SGD(eta, n_minibatch, n_epochs, validation_steps, validation_interval, valid
     print 'Total words seen is', words_seen
     print 'Total words matched is', match_idx
     print 'Ratio is', match_idx/words_seen
-    
+
 if __name__=="__main__":
     valid_headwords = mappings_words[:]
-    SGD(0.01, 40000, 40, 10, 3333, valid_headwords)
+    SGD(0.1, 20000, 700, 10, 3333, valid_headwords)
 
 # THEANO_FLAGS='theano.config.floatX='float32', device='cpu', optimizer='None'' python childtreesimple.py
 # import theano, numpy as np, theano.tensor as T
