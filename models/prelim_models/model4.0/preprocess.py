@@ -6,44 +6,9 @@ import nltk
 import time
 import re
 
-"""
-SOME NOTES ABOUT USING NUMPY:
-
-Used numpy as shown in preprocess.py. Didn't work out. Memory usage too much. 10x factor slower.
-Another note is that when process ends, does not always free memory. Why is this? (numpy)
-Results:
-azrael@azrael-G551JK:~/Documents/nn/code/prelim2.0$ python preprocess1.py (without numpy)
-Using gpu device 0: GeForce GTX 850M
-Number of Vec tokens are  20400000
-Length of input dict is  3109
-Length of word vecs is  400000
-Length of mappings vec is  400000
-Length of mappings words is  400000
-Completed insertion of new words in time 23.1122250557
-Final length of mappings words is  400735
-Time taken by whole process is in minutes  0.447935120265
-
-azrael@azrael-G551JK:~/Documents/nn/code/prelim2.0$ python preprocess.py (with numpy)
-Using gpu device 0: GeForce GTX 850M
-Number of Vec tokens are  20400000
-Length of input dict is  3109
-Length of word vecs is  400000
-Length of mappings vec is  400000
-Length of mappings words is  400000
-Completed insertion of new words in time 229.8882792
-Final length of mappings words is  400735
-Size of word_vecs in MB is 25
-Size of mappings vec in MB is  641.176 (not sure about using nbytes check it properly)
-Size of mappings words in MB is  27
-Time taken by whole process is in minutes  3.92276798487
-
-These results are using 50d word vecs and a 61KB text file. Maybe using a bigger file will have some changes?
-"""
-
-
 def tokeniize(string):
     # This regular expression handles words like "breech-loading" and converts them into "breech loading"
-    # Numbers are not coverted at the moment. Makes no sense. They are not present in glove vectors.
+    # Numbers are not converted at the moment. Makes no sense. They are not present in glove vectors.
     temp = re.sub(r'(?<=[a-zA-Z])[-](?=[a-zA-Z])', r' ', string)
     temp_ = re.sub(r'(?<=[a-zA-Z])[.](?=[a-zA-Z])', r'. ', temp)
     temp__ = re.sub(r'(?<=[a-zA-Z])[/](?=[a-zA-Z])', r' / ', temp_)
@@ -124,12 +89,3 @@ def sentence_vec(sentence, np_vecs, mappings_words):
         list_vec.append(np_vecs[mappings_words.index(word)])
     # Done in order to make shape (vec_dims, n_words)
     return np.asarray(list_vec, theano.config.floatX).T
-
-
-if __name__ == "__main__":
-    t0 = time.time()
-    vec_file = '/home/azrael/Documents/nn/seq_gen/data/vectors.6B.50d.txt'
-    data_file = '/home/azrael/Documents/nn/seq_gen/data/smallwikisample.txt'
-    vec_dims = 50
-    load_vecs(vec_file, data_file, vec_dims)
-    print 'Time taken by whole process is in minutes ', (time.time() - t0) / 60.0
