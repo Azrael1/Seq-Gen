@@ -1,6 +1,10 @@
 __author__ = 'azrael'
 """
-The code is quite complex. If you need help with understanding/implementing it, please mail bhavishya.pohani@gmail.com.
+The code is quite complex. If you need help with understanding/implementing it, mail bhavishya.pohani@gmail.com.
+There are 2 files needed for running this experiment.
+1) The glove vectors file.
+2) The text file on which training is done.
+Github does not allow me to attach text files of such size. Mail me at the above email-id to get the data. 
 """
 import theano.tensor as T
 from preprocess import *
@@ -11,11 +15,11 @@ np.set_printoptions(threshold=500)
 assert_op = T.opt.Assert()
 n_in = 10
 n_tree = 4
-vec_file = '/home/azrael/Documents/nn/seq_gen/data/vectors.6B.50d.txt'
+vec_file = 'path-to-vector-file'
 vec_dims = 50
 n_nodes = 100
 rng = np.random.RandomState(123)
-doc_path = '/home/azrael/Documents/nn/seq_gen/data/extremelysmallwikisample.txt'
+doc_path = 'path-to-text-file-on-which-training-occurs'
 mappings_words, mappings_vec, input_text = load_vecs(vec_file, doc_path, vec_dims)
 np_vecs = np.asarray(mappings_vec.get_value(), theano.config.floatX)
 
